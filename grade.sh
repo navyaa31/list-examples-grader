@@ -14,3 +14,33 @@ echo 'Finished cloning'
 
 # Then, add here code to compile and run, and do any post-processing of the
 # tests
+
+cp student-submission/*.java grading-area
+cp *.java grading-area
+cp -r lib grading-area
+
+cd grading-area
+
+if ! [ -f ListExamples.java ]
+then 
+    echo "Missing ListExamples.java in student submission"
+    echo "Score: Fail"
+    exit
+fi 
+
+if ! grep -q 'class\s*ListExamples' "ListExamples.java";
+then 
+    echo "Missing ListExamples class in student submission"
+    echo "Score: Fail"
+    exit
+fi
+
+javac -cp $CPATH *.java
+if [ $? -ne 0 ]
+then 
+    echo "Compilation Error"
+    echo "Score: Fail"
+    exit
+fi
+
+echo "Score: Pass"
